@@ -22,14 +22,16 @@ import {
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "@/utils/firebase";
 import { useNavigate } from "@tanstack/react-router";
+import { useState } from "react";
 
 const User = z.object({
   email: z.string().email({ message: "Email inválido" }),
   password: z.string().min(6, "Senha deve conter no minimo 6 caracteres"),
 });
 
-export function LoginPage() {
+const useLogic = () => {
   const navigate = useNavigate({ from: "/" });
+  const [value, setValue] = useState("");
 
   const { mutate: login } = useMutation({
     mutationFn: ({ email, password }: z.infer<typeof User>) => {
@@ -39,6 +41,44 @@ export function LoginPage() {
       navigate({ to: "/dashboard" });
     },
   });
+
+  // quando a senha for inválida
+  // quando o email for inválido
+  // quando o telefone estiver incompleto
+
+  const handleOnPhoneNumberChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const filterNumbers = e.target.value.replace(/\D/g, "");
+
+    const numbersDDD = filterNumbers.slice(0, 2);
+    const numberPart2 = filterNumbers.slice(2, 7);
+    const numberPart3 = filterNumbers.slice(7, 11);
+
+    let phoneFormat = "";
+
+    if (numbersDDD) {
+      phoneFormat += `(${numbersDDD}`;
+    }
+    if (numberPart2) {
+      phoneFormat += `) ${numberPart2}`;
+    }
+    if (numberPart3) {
+      phoneFormat += `-${numberPart3}`;
+    }
+
+    setValue(phoneFormat);
+  };
+
+  return {
+    login,
+    value,
+    handleOnPhoneNumberChange,
+  };
+};
+
+export function LoginPage() {
+  const { login, value, handleOnPhoneNumberChange } = useLogic();
 
   return (
     <div className="flex min-h-screen">
@@ -56,55 +96,77 @@ export function LoginPage() {
           initialValues={{ email: "", password: "" }}
           onSubmit={login}
         >
-          <Form className="space-y-4">
-            <div>
-              <Label
-                htmlFor="email"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Email
-              </Label>
-              <Field
-                name="email"
-                id="email"
-                type="email"
-                placeholder="Email"
-                className="w-full mt-1"
-              />
-              <ErrorMessage name="email" />
-            </div>
-            <div>
-              <Label
-                htmlFor="password"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Password
-              </Label>
-              <Field
-                name="password"
-                id="password"
-                type="password"
-                placeholder="Password"
-                className="w-full mt-1"
-              />
-              <ErrorMessage name="password" />
-            </div>
-            <div className="flex items-center justify-between">
-              <div className="flex items-center">
-                <Checkbox id="remember" />
+          {({ isValid }) => (
+            <Form className="space-y-4">
+              <div>
                 <Label
-                  htmlFor="remember"
-                  className="ml-2 text-sm text-gray-600"
+                  htmlFor="email"
+                  className="block text-sm font-medium text-gray-700"
                 >
-                  Remember me?
+                  Email
                 </Label>
+                <Field
+                  name="email"
+                  id="email"
+                  type="email"
+                  placeholder="user@email.com"
+                  className="w-full mt-1"
+                />
+                <ErrorMessage name="email" />
               </div>
-              <a href="#" className="text-sm text-blue-600">
-                Forgot Password
-              </a>
-            </div>
-            <Button className="w-full bg-blue-600 text-white">Sign In</Button>
-          </Form>
+              <div>
+                <Label
+                  htmlFor="password"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Password
+                </Label>
+                <Field
+                  name="password"
+                  id="password"
+                  type="password"
+                  placeholder="******"
+                  className="w-full mt-1"
+                />
+                <ErrorMessage name="password" />
+
+                <Label
+                  htmlFor="phone"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Phone Number
+                </Label>
+                <Field
+                  name="phone"
+                  id="phone"
+                  value={value}
+                  onChange={handleOnPhoneNumberChange}
+                  placeholder="Phone Number"
+                  className="w-full mt-1"
+                />
+              </div>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center">
+                  <Checkbox id="remember" />
+                  <Label
+                    htmlFor="remember"
+                    className="ml-2 text-sm text-gray-600"
+                  >
+                    Remember me?
+                  </Label>
+                </div>
+                <a href="#" className="text-sm text-blue-600">
+                  Forgot Password
+                </a>
+              </div>
+              <Button
+                className="w-full bg-blue-600 text-white"
+                disabled={!isValid}
+              >
+                Sign In
+              </Button>
+            </Form>
+          )}
         </Formik>
         <div className="text-center text-gray-600">
           or sign in with other accounts?

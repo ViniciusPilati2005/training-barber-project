@@ -31,7 +31,8 @@ const User = z.object({
 
 const useLogic = () => {
   const navigate = useNavigate({ from: "/" });
-  const [value, setValue] = useState("");
+  const [phoneNumberValue, setPhoneNumberValue] = useState("");
+  const [cpfValue, setCpfValue] = useState("");
 
   const { mutate: login } = useMutation({
     mutationFn: ({ email, password }: z.infer<typeof User>) => {
@@ -41,10 +42,6 @@ const useLogic = () => {
       navigate({ to: "/dashboard" });
     },
   });
-
-  // quando a senha for inválida
-  // quando o email for inválido
-  // quando o telefone estiver incompleto
 
   const handleOnPhoneNumberChange = (
     e: React.ChangeEvent<HTMLInputElement>
@@ -67,18 +64,52 @@ const useLogic = () => {
       phoneFormat += `-${numberPart3}`;
     }
 
-    setValue(phoneFormat);
+    setPhoneNumberValue(phoneFormat);
+  };
+
+  const handleOnCpfChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const filterNumbers = e.target.value.replace(/\D/g, "");
+
+    const threeInitialNumbers = filterNumbers.slice(0, 3);
+    const threeSecondNumbers = filterNumbers.slice(3, 6);
+    const threeFinallyNumbers = filterNumbers.slice(6, 9);
+    const twoEndNumbers = filterNumbers.slice(9, 11);
+
+    let CpfFormat = "";
+
+    if (threeInitialNumbers) {
+      CpfFormat += `${threeInitialNumbers}`;
+    }
+    if (threeSecondNumbers) {
+      CpfFormat += `.${threeSecondNumbers}`;
+    }
+    if (threeFinallyNumbers) {
+      CpfFormat += `.${threeFinallyNumbers}`;
+    }
+    if (twoEndNumbers) {
+      CpfFormat += `-${twoEndNumbers}`;
+    }
+
+    setCpfValue(CpfFormat);
   };
 
   return {
     login,
-    value,
+    phoneNumberValue,
     handleOnPhoneNumberChange,
+    handleOnCpfChange,
+    cpfValue,
   };
 };
 
 export function LoginPage() {
-  const { login, value, handleOnPhoneNumberChange } = useLogic();
+  const {
+    login,
+    cpfValue,
+    handleOnPhoneNumberChange,
+    handleOnCpfChange,
+    phoneNumberValue,
+  } = useLogic();
 
   return (
     <div className="flex min-h-screen">
@@ -139,9 +170,38 @@ export function LoginPage() {
                 <Field
                   name="phone"
                   id="phone"
-                  value={value}
+                  value={phoneNumberValue}
                   onChange={handleOnPhoneNumberChange}
                   placeholder="Phone Number"
+                  className="w-full mt-1"
+                />
+                <Label
+                  htmlFor="cpf"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  CPF
+                </Label>
+                <Field
+                  name="cpf"
+                  id="cpf"
+                  value={cpfValue}
+                  onChange={handleOnCpfChange}
+                  placeholder="xxxxxxxxxxx"
+                  className="w-full mt-1"
+                />
+
+                <Label
+                  htmlFor="cpnj"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  CNPJ
+                </Label>
+                <Field
+                  name="cnpj"
+                  id="cnpj"
+                  // value={value}
+                  // onChange={}
+                  placeholder="xxxxxxxxxxxxxx"
                   className="w-full mt-1"
                 />
               </div>
@@ -160,6 +220,7 @@ export function LoginPage() {
                 </a>
               </div>
               <Button
+                type="submit"
                 className="w-full bg-blue-600 text-white"
                 disabled={!isValid}
               >

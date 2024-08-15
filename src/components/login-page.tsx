@@ -33,6 +33,7 @@ const useLogic = () => {
   const navigate = useNavigate({ from: "/" });
   const [phoneNumberValue, setPhoneNumberValue] = useState("");
   const [cpfValue, setCpfValue] = useState("");
+  const [cnpjValue, setCnpjValue] = useState("");
 
   const { mutate: login } = useMutation({
     mutationFn: ({ email, password }: z.infer<typeof User>) => {
@@ -63,12 +64,23 @@ const useLogic = () => {
     setCpfValue(filterNumbers);
   };
 
+  const handleOnCnpjChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const filterCpnjNumbers = e.target.value
+      .replace(/^\D/, "")
+      .slice(0, 18)
+      .replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, "$1.$2.$3/$4-$5");
+
+    setCnpjValue(filterCpnjNumbers);
+  };
+
   return {
     login,
     phoneNumberValue,
     handleOnPhoneNumberChange,
     handleOnCpfChange,
+    handleOnCnpjChange,
     cpfValue,
+    cnpjValue,
   };
 };
 
@@ -79,6 +91,8 @@ export function LoginPage() {
     handleOnPhoneNumberChange,
     handleOnCpfChange,
     phoneNumberValue,
+    handleOnCnpjChange,
+    cnpjValue,
   } = useLogic();
 
   return (
@@ -169,8 +183,8 @@ export function LoginPage() {
                 <Field
                   name="cnpj"
                   id="cnpj"
-                  // value={value}
-                  // onChange={}
+                  value={cnpjValue}
+                  onChange={handleOnCnpjChange}
                   placeholder="xxxxxxxxxxxxxx"
                   className="w-full mt-1"
                 />

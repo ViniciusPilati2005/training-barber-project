@@ -46,25 +46,12 @@ const useLogic = () => {
   const handleOnPhoneNumberChange = (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
-    const filterNumbers = e.target.value.replace(/\D/g, "");
+    const filterNumbers = e.target.value
+      .replace(/\D/g, "")
+      .slice(0, 11)
+      .replace(/^(\d{2})(\d{5})(\d{4})$/, "($1) $2-$3");
 
-    const numbersDDD = filterNumbers.slice(0, 2);
-    const numberPart2 = filterNumbers.slice(2, 7);
-    const numberPart3 = filterNumbers.slice(7, 11);
-
-    let phoneFormat = "";
-
-    if (numbersDDD) {
-      phoneFormat += `(${numbersDDD}`;
-    }
-    if (numberPart2) {
-      phoneFormat += `) ${numberPart2}`;
-    }
-    if (numberPart3) {
-      phoneFormat += `-${numberPart3}`;
-    }
-
-    setPhoneNumberValue(phoneFormat);
+    setPhoneNumberValue(filterNumbers);
   };
 
   const handleOnCpfChange = (e: React.ChangeEvent<HTMLInputElement>) => {

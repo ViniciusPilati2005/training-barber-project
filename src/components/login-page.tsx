@@ -55,29 +55,12 @@ const useLogic = () => {
   };
 
   const handleOnCpfChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const filterNumbers = e.target.value.replace(/\D/g, "");
+    const filterNumbers = e.target.value
+      .replace(/\D/g, "")
+      .slice(0, 11)
+      .replace(/^(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
 
-    const threeInitialNumbers = filterNumbers.slice(0, 3);
-    const threeSecondNumbers = filterNumbers.slice(3, 6);
-    const threeFinallyNumbers = filterNumbers.slice(6, 9);
-    const twoEndNumbers = filterNumbers.slice(9, 11);
-
-    let CpfFormat = "";
-
-    if (threeInitialNumbers) {
-      CpfFormat += `${threeInitialNumbers}`;
-    }
-    if (threeSecondNumbers) {
-      CpfFormat += `.${threeSecondNumbers}`;
-    }
-    if (threeFinallyNumbers) {
-      CpfFormat += `.${threeFinallyNumbers}`;
-    }
-    if (twoEndNumbers) {
-      CpfFormat += `-${twoEndNumbers}`;
-    }
-
-    setCpfValue(CpfFormat);
+    setCpfValue(filterNumbers);
   };
 
   return {

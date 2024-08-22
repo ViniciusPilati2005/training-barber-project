@@ -50,7 +50,9 @@ const useLogic = () => {
     const filterNumbers = e.target.value
       .replace(/\D/g, "")
       .slice(0, 11)
-      .replace(/^(\d{2})(\d{5})(\d{4})$/, "($1) $2-$3");
+      .replace(/(\d{2})(\d)/, "($1) $2")
+      .replace(/(\d{5})(\d)/, "$1-$2")
+      .replace(/(\d{4})/, '$1')
 
     setPhoneNumberValue(filterNumbers);
   };

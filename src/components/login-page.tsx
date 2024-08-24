@@ -52,7 +52,7 @@ const useLogic = () => {
       .slice(0, 11)
       .replace(/(\d{2})(\d)/, "($1) $2")
       .replace(/(\d{5})(\d)/, "$1-$2")
-      .replace(/(\d{4})/, '$1')
+      .replace(/(\d{4})/, "$1");
 
     setPhoneNumberValue(filterNumbers);
   };
@@ -61,7 +61,9 @@ const useLogic = () => {
     const filterNumbers = e.target.value
       .replace(/\D/g, "")
       .slice(0, 11)
-      .replace(/^(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
+      .replace(/^(\d{3})(\d)/, "$1.$2")
+      .replace(/(\d{3})(\d)/, "$1.$2")
+      .replace(/(\d{3})(\d{2})/, "$1-$2");
 
     setCpfValue(filterNumbers);
   };

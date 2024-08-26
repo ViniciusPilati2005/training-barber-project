@@ -12,17 +12,11 @@ import { toFormikValidationSchema } from "zod-formik-adapter";
 import { useMutation } from "@tanstack/react-query";
 import { Field } from "./ui/field";
 import { ErrorMessage } from "./ui/error-message";
-import {
-  AppleIcon,
-  ChromeIcon,
-  FacebookIcon,
-  LogInIcon,
-  TwitterIcon,
-} from "lucide-react";
+import { AppleIcon, ChromeIcon, LogInIcon } from "lucide-react";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "@/utils/firebase";
 import { useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
+import barberShop from "@/assets/barberShop.jpg";
 
 const User = z.object({
   email: z.string().email({ message: "Email inválido" }),
@@ -31,7 +25,6 @@ const User = z.object({
 
 const useLogic = () => {
   const navigate = useNavigate({ from: "/" });
-  const [cpfCnpjValue, setCpfCnpjValue] = useState("");
 
   const { mutate: login } = useMutation({
     mutationFn: ({ email, password }: z.infer<typeof User>) => {
@@ -42,152 +35,112 @@ const useLogic = () => {
     },
   });
 
-  const handleOnCpfCnpjChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const filterNumbers = e.target.value.replace(/\D/g, "").slice(0, 14);
-
-    let valorFormatado = "";
-
-    if (filterNumbers.length <= 11 && filterNumbers.length >= 0) {
-      valorFormatado = filterNumbers
-        .replace(/^(\d{3})(\d)/, "$1.$2")
-        .replace(/(\d{3})(\d)/, "$1.$2")
-        .replace(/(\d{3})(\d{2})/, "$1-$2");
-    } else if (filterNumbers.length > 11) {
-      valorFormatado = filterNumbers
-        .replace(/^(\d{2})(\d)/, "$1.$2")
-        .replace(/(\d{3})(\d)/, "$1.$2")
-        .replace(/(\d{3})(\d)/, "$1/$2")
-        .replace(/(\d{4})(\d{2})/, "$1-$2");
-    }
-    setCpfCnpjValue(valorFormatado);
-  };
-
   return {
     login,
-    handleOnCpfCnpjChange,
-    cpfCnpjValue,
   };
 };
 
 export function LoginPage() {
-  const { login, cpfCnpjValue, handleOnCpfCnpjChange } = useLogic();
+  const { login } = useLogic();
 
   return (
-    <div className="flex min-h-screen">
-      <div className="flex flex-col justify-center w-full max-w-md p-8 space-y-6 bg-white">
-        <div className="flex items-start justify-center space-x-2">
-          <LogInIcon className="w-8 h-8 text-blue-600" />
-          <h1 className="text-2xl font-bold text-gray-900">Hope Ui</h1>
-        </div>
-        <h2 className="text-3xl font-semibold text-center text-gray-900">
-          Sign In
-        </h2>
-        <p className="text-center text-gray-600">Sign in to stay connected.</p>
-        <Formik
-          validationSchema={toFormikValidationSchema(User)}
-          initialValues={{ email: "", password: "" }}
-          onSubmit={login}
-        >
-          {({ isValid }) => (
-            <Form className="space-y-4">
-              <div>
-                <Label
-                  htmlFor="email"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Email
-                </Label>
-                <Field
-                  name="email"
-                  id="email"
-                  type="email"
-                  placeholder="user@email.com"
-                  className="w-full mt-1"
-                />
-                <ErrorMessage name="email" />
-              </div>
-              <div>
-                <Label
-                  htmlFor="password"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Password
-                </Label>
-                <Field
-                  name="password"
-                  id="password"
-                  type="password"
-                  placeholder="******"
-                  className="w-full mt-1"
-                />
-                <ErrorMessage name="password" />
-
-                <Label
-                  htmlFor="cpfCnpj"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  CPF ou CNPJ(Opcional)
-                </Label>
-                <Field
-                  name="cpfCnpj"
-                  id="cpfCnpj"
-                  value={cpfCnpjValue}
-                  onChange={handleOnCpfCnpjChange}
-                  placeholder="xxxxxxxxxxx"
-                  className="w-full mt-1"
-                />
-              </div>
-              <div className="flex items-center justify-between">
-                <div className="flex items-center">
-                  <Checkbox id="remember" />
+    <div className="flex items-center justify-center w-full h-[100vh]">
+      <img
+        src={barberShop}
+        alt="Barbearia"
+        className="static w-full h-[100vh]"
+      />
+      <div className="flex items-center justify-center absolute sm:top-16">
+        <div className="flex flex-col justify-center border rounded w-full min-w-96 max-w-md p-8 space-y-6 bg-white">
+          <div className="flex items-start justify-center space-x-2">
+            <LogInIcon className="w-8 h-8 text-blue-600" />
+            <h1 className="text-2xl font-bold text-gray-900">
+              Barbearia REACT
+            </h1>
+          </div>
+          <h2 className="text-3xl font-semibold text-center text-gray-900">
+            Faça seu login.
+          </h2>
+          <Formik
+            validationSchema={toFormikValidationSchema(User)}
+            initialValues={{ email: "", password: "" }}
+            onSubmit={login}
+          >
+            {({ isValid }) => (
+              <Form className="space-y-4">
+                <div>
                   <Label
-                    htmlFor="remember"
-                    className="ml-2 text-sm text-gray-600"
+                    htmlFor="email"
+                    className="block text-sm font-medium text-gray-700"
                   >
-                    Remember me?
+                    Email
                   </Label>
+                  <Field
+                    name="email"
+                    id="email"
+                    type="email"
+                    placeholder="user@email.com"
+                    className="w-full mt-1"
+                  />
+                  <ErrorMessage name="email" />
                 </div>
-                <a href="#" className="text-sm text-blue-600">
-                  Forgot Password
-                </a>
-              </div>
-              <Button
-                type="submit"
-                className="w-full bg-blue-600 text-white"
-                disabled={!isValid}
-              >
-                Sign In
-              </Button>
-            </Form>
-          )}
-        </Formik>
-        <div className="text-center text-gray-600">
-          or sign in with other accounts?
-        </div>
-        <div className="flex justify-center space-x-4">
-          <Button variant="ghost" className="p-2">
-            <ChromeIcon className="w-6 h-6" />
-          </Button>
-          <Button variant="ghost" className="p-2">
-            <FacebookIcon className="w-6 h-6" />
-          </Button>
-          <Button variant="ghost" className="p-2">
-            <TwitterIcon className="w-6 h-6" />
-          </Button>
-          <Button variant="ghost" className="p-2">
-            <AppleIcon className="w-6 h-6" />
-          </Button>
-        </div>
-        <div className="text-center text-gray-600">
-          Don't have an account?{" "}
-          <a href="#" className="text-blue-600">
-            Click here to sign up.
-          </a>
-        </div>
-      </div>
-      <div className="hidden w-full bg-blue-700 lg:block">
-        <div className="flex items-center justify-center h-full">
-          <div className="w-full h-full bg-gradient-to-b from-blue-600 to-blue-800" />
+                <div>
+                  <Label
+                    htmlFor="password"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    Password
+                  </Label>
+                  <Field
+                    name="password"
+                    id="password"
+                    type="password"
+                    placeholder="******"
+                    className="w-full mt-1"
+                  />
+                  <ErrorMessage name="password" />
+                </div>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center">
+                    <Checkbox id="remember" />
+                    <Label
+                      htmlFor="remember"
+                      className="ml-2 text-sm text-gray-600"
+                    >
+                      Remember me?
+                    </Label>
+                  </div>
+                  <a href="#" className="text-sm text-blue-600">
+                    Forgot Password
+                  </a>
+                </div>
+                <Button
+                  type="submit"
+                  className="w-full bg-blue-600 text-white"
+                  disabled={!isValid}
+                >
+                  Continuar
+                </Button>
+              </Form>
+            )}
+          </Formik>
+          <div className="text-center text-gray-600">
+            Fazer login com outras contas?
+          </div>
+          <div className="flex justify-center space-x-4">
+            <Button variant="ghost" className="p-2">
+              <ChromeIcon className="w-6 h-6" />
+            </Button>
+            <Button variant="ghost" className="p-2">
+              <AppleIcon className="w-6 h-6" />
+            </Button>
+          </div>
+          <div className="text-center text-gray-600 flex gap-1">
+            Não possui uma conta?
+            <a href="#" className="text-blue-600">
+              Clique aqui para cadastrar
+            </a>
+          </div>
         </div>
       </div>
     </div>

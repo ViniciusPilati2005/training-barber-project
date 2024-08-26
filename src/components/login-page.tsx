@@ -82,7 +82,10 @@ export function LoginPage() {
                     placeholder="user@email.com"
                     className="w-full mt-1"
                   />
-                  <ErrorMessage name="email" />
+                  <p className="flex">
+                    &nbsp;
+                    <ErrorMessage name="email" />
+                  </p>
                 </div>
                 <div>
                   <Label
@@ -98,7 +101,10 @@ export function LoginPage() {
                     placeholder="******"
                     className="w-full mt-1"
                   />
-                  <ErrorMessage name="password" />
+                  <p className="flex">
+                    &nbsp;
+                    <ErrorMessage name="password" />
+                  </p>
                 </div>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center">

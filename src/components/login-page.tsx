@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { Form, Formik } from "formik";
-import { z } from "zod";
+import { z } from "@/pt-br-zod";
 import { toFormikValidationSchema } from "zod-formik-adapter";
 import { useMutation } from "@tanstack/react-query";
 import { Field } from "./ui/field";
@@ -19,8 +19,8 @@ import { useNavigate } from "@tanstack/react-router";
 import barberShop from "@/assets/barberShop.jpg";
 
 const User = z.object({
-  email: z.string().email({ message: "Email inválido" }),
-  password: z.string().min(6, "Senha deve conter no minimo 6 caracteres"),
+  email: z.string().email(),
+  password: z.string().min(6),
 });
 
 const useLogic = () => {

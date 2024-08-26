@@ -31,9 +31,7 @@ const User = z.object({
 
 const useLogic = () => {
   const navigate = useNavigate({ from: "/" });
-  const [phoneNumberValue, setPhoneNumberValue] = useState("");
-  const [cpfValue, setCpfValue] = useState("");
-  const [cnpjValue, setCnpjValue] = useState("");
+  const [cpfCnpjValue, setCpfCnpjValue] = useState("");
 
   const { mutate: login } = useMutation({
     mutationFn: ({ email, password }: z.infer<typeof User>) => {
@@ -44,60 +42,35 @@ const useLogic = () => {
     },
   });
 
-  const handleOnPhoneNumberChange = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const filterNumbers = e.target.value
-      .replace(/\D/g, "")
-      .slice(0, 11)
-      .replace(/(\d{2})(\d)/, "($1) $2")
-      .replace(/(\d{5})(\d)/, "$1-$2")
-      .replace(/(\d{4})/, "$1");
+  const handleOnCpfCnpjChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const filterNumbers = e.target.value.replace(/\D/g, "").slice(0, 14);
 
-    setPhoneNumberValue(filterNumbers);
-  };
+    let valorFormatado = "";
 
-  const handleOnCpfChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const filterNumbers = e.target.value
-      .replace(/\D/g, "")
-      .slice(0, 11)
-      .replace(/^(\d{3})(\d)/, "$1.$2")
-      .replace(/(\d{3})(\d)/, "$1.$2")
-      .replace(/(\d{3})(\d{2})/, "$1-$2");
-
-    setCpfValue(filterNumbers);
-  };
-
-  const handleOnCnpjChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const filterCpnjNumbers = e.target.value
-      .replace(/^\D/, "")
-      .slice(0, 18)
-      .replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, "$1.$2.$3/$4-$5");
-
-    setCnpjValue(filterCpnjNumbers);
+    if (filterNumbers.length <= 11 && filterNumbers.length >= 0) {
+      valorFormatado = filterNumbers
+        .replace(/^(\d{3})(\d)/, "$1.$2")
+        .replace(/(\d{3})(\d)/, "$1.$2")
+        .replace(/(\d{3})(\d{2})/, "$1-$2");
+    } else if (filterNumbers.length > 11) {
+      valorFormatado = filterNumbers
+        .replace(/^(\d{2})(\d)/, "$1.$2")
+        .replace(/(\d{3})(\d)/, "$1.$2")
+        .replace(/(\d{3})(\d)/, "$1/$2")
+        .replace(/(\d{4})(\d{2})/, "$1-$2");
+    }
+    setCpfCnpjValue(valorFormatado);
   };
 
   return {
     login,
-    phoneNumberValue,
-    handleOnPhoneNumberChange,
-    handleOnCpfChange,
-    handleOnCnpjChange,
-    cpfValue,
-    cnpjValue,
+    handleOnCpfCnpjChange,
+    cpfCnpjValue,
   };
 };
 
 export function LoginPage() {
-  const {
-    login,
-    cpfValue,
-    handleOnPhoneNumberChange,
-    handleOnCpfChange,
-    phoneNumberValue,
-    handleOnCnpjChange,
-    cnpjValue,
-  } = useLogic();
+  const { login, cpfCnpjValue, handleOnCpfCnpjChange } = useLogic();
 
   return (
     <div className="flex min-h-screen">
@@ -150,46 +123,17 @@ export function LoginPage() {
                 <ErrorMessage name="password" />
 
                 <Label
-                  htmlFor="phone"
+                  htmlFor="cpfCnpj"
                   className="block text-sm font-medium text-gray-700"
                 >
-                  Phone Number
+                  CPF ou CNPJ(Opcional)
                 </Label>
                 <Field
-                  name="phone"
-                  id="phone"
-                  value={phoneNumberValue}
-                  onChange={handleOnPhoneNumberChange}
-                  placeholder="Phone Number"
-                  className="w-full mt-1"
-                />
-                <Label
-                  htmlFor="cpf"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  CPF
-                </Label>
-                <Field
-                  name="cpf"
-                  id="cpf"
-                  value={cpfValue}
-                  onChange={handleOnCpfChange}
+                  name="cpfCnpj"
+                  id="cpfCnpj"
+                  value={cpfCnpjValue}
+                  onChange={handleOnCpfCnpjChange}
                   placeholder="xxxxxxxxxxx"
-                  className="w-full mt-1"
-                />
-
-                <Label
-                  htmlFor="cpnj"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  CNPJ
-                </Label>
-                <Field
-                  name="cnpj"
-                  id="cnpj"
-                  value={cnpjValue}
-                  onChange={handleOnCnpjChange}
-                  placeholder="xxxxxxxxxxxxxx"
                   className="w-full mt-1"
                 />
               </div>

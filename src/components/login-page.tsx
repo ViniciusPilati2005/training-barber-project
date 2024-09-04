@@ -1,19 +1,14 @@
-import { Label } from "@/components/ui/label";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Button } from "@/components/ui/button";
-import { Form, Formik } from "formik";
-import { z } from "@/pt-br-zod";
-import { toFormikValidationSchema } from "zod-formik-adapter";
-import { useMutation } from "@tanstack/react-query";
-import { Field } from "./ui/field";
-import { ErrorMessage } from "./ui/error-message";
-import { AppleIcon, ChromeIcon, LogInIcon } from "lucide-react";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "@/utils/firebase";
-import { useNavigate } from "@tanstack/react-router";
 import barberShop from "@/assets/barberShop.jpg";
-import { FirebaseError } from "firebase/app";
-import { useToast } from "@/hooks/use-toast";
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
+import { useSignInEmailPasswordController } from "@/controllers/signIn-email-password";
+import { z } from "@/utils/pt-br-zod";
+import { Form, Formik } from "formik";
+import { AppleIcon, ChromeIcon, LogInIcon } from "lucide-react";
+import { toFormikValidationSchema } from "zod-formik-adapter";
+import { ErrorMessage } from "./ui/error-message";
+import { Field } from "./ui/field";
 
 const User = z.object({
   email: z.string().email(),
@@ -21,74 +16,15 @@ const User = z.object({
 });
 
 const useLogic = () => {
-  const navigate = useNavigate({ from: "/" });
-  const { toast } = useToast();
-
-  const { mutate: login } = useMutation({
-    mutationFn: ({ email, password }: z.infer<typeof User>) => {
-      return signInWithEmailAndPassword(auth, email, password);
-    },
-    onSuccess: () => {
-      navigate({ to: "/dashboard" });
-    },
-    onError: (error) => {
-      if (error instanceof FirebaseError) {
-        console.log(error.code);
-        switch (error.code) {
-          case "auth/invalid-email":
-            toast({
-              variant: "destructive",
-              title: "Erro!",
-              description: "Este email não é valido.",
-            });
-            break;
-          case "auth/user-disabled":
-            toast({
-              variant: "destructive",
-              title: "Erro!",
-              description: "Este usuário foi desativado.",
-            });
-            break;
-          case "auth/user-not-found":
-            toast({
-              variant: "destructive",
-              title: "Erro!",
-              description: "Este usuário não foi encontrado.",
-            });
-            break;
-          case "auth/wrong-password":
-            toast({
-              variant: "destructive",
-              title: "Erro!",
-              description: "Senha inválida ou indefinida.",
-            });
-            break;
-
-          default:
-            toast({
-              variant: "destructive",
-              title: "Erro!",
-              description: "Não foi possivel realizar a operação.",
-            });
-            break;
-        }
-        return;
-      }
-      toast({
-        variant: "destructive",
-        title: "Erro!",
-        description: "Não foi possivel realizar a operação.",
-      });
-    },
-  });
+  const { signInWithEmailPassword } = useSignInEmailPasswordController();
 
   return {
-    login,
+    signInWithEmailPassword,
   };
 };
 
 export function LoginPage() {
-  const { login } = useLogic();
+  const { signInWithEmailPassword } = useLogic();
 
   return (
     <div className="flex items-center justify-center w-full h-[100vh]">
@@ -111,7 +47,7 @@ export function LoginPage() {
           <Formik
             validationSchema={toFormikValidationSchema(User)}
             initialValues={{ email: "", password: "" }}
-            onSubmit={login}
+            onSubmit={signInWithEmailPassword}
           >
             {({ isValid }) => (
               <Form className="space-y-4">

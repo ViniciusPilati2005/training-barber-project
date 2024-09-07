@@ -13,7 +13,7 @@ import {
 } from "@radix-ui/react-dropdown-menu";
 import { ActivityOverview } from "@/components/activity-overview";
 
-export const Route = createFileRoute("/_authenticated/dashboard")({
+export const Route = createFileRoute("/dashboard")({
   component: Dashboard,
 });
 

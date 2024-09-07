@@ -1,5 +1,6 @@
 import { useToast } from "@/hooks/use-toast";
-import { useSignInEmailPasswordMutation } from "@/mutations/signIn-email-password";
+import { useSignInEmailPasswordMutation } from "@/mutations/use-signIn-email-password";
+import { useSignInGoogleMutation } from "@/mutations/use-signIn-google";
 import { useNavigate } from "@tanstack/react-router";
 import { FirebaseError } from "firebase/app";
 
@@ -60,5 +61,80 @@ export function useSignInEmailPasswordController() {
             });
           },
     });
-    return {signInWithEmailPassword};
+
+    const { mutate: signInGoogle } = useSignInGoogleMutation({
+      onSuccess: () => {
+        navigate({to: '/dashboard'})
+      },
+      onError: (error) => {
+        if(error instanceof FirebaseError) {
+          switch(error.code) {
+            case 'auth/account-exists-with-different-credential':
+            toast({
+              variant: "destructive",
+              title: "Erro!",
+              description: "Já existe uma conta com essa credencial",
+            });
+            break;
+            case 'auth/auth-domain-config-required':
+              toast({
+                variant: "destructive",
+                title: "Erro!",
+                description: "A configuração do dominio não existe",
+              });
+              break;
+              case 'auth/cancelled-popup-request':
+                toast({
+                  variant: "destructive",
+                  title: "Erro!",
+                  description: "A requisição foi cancelada",
+                });
+              break;
+              case 'auth/operation-not-allowed':
+                toast({
+                  variant: "destructive",
+                  title: "Erro!",
+                  description: "Não foi possivel realizar a operação",
+                });
+              break;
+              case 'auth/operation-not-supported-in-this-environment':
+                toast({
+                  variant: "destructive",
+                  title: "Erro!",
+                  description: "Operação não suportada nestea ambiente",
+                });
+              break;
+              case 'auth/popup-blocked':
+                toast({
+                  variant: "destructive",
+                  title: "Erro!",
+                  description: "O popup foi bloqueado",
+                });
+              break;
+              case 'auth/popup-closed-by-user':
+                toast({
+                  variant: "destructive",
+                  title: "Erro!",
+                  description: "O popup foi fechado pelo usuário",
+                });
+              break;
+              case 'auth/unauthorized-domain':
+                toast({
+                  variant: "destructive",
+                  title: "Erro!",
+                  description: "Dominio não autorizado",
+                });
+              break;
+          }
+          return
+        }
+        toast({
+          variant: "destructive",
+          title: "Erro!",
+          description: "Não foi possivel fazer login com google.",
+        });
+      }
+    });
+
+    return {signInWithEmailPassword, signInGoogle};
 }

@@ -2,11 +2,10 @@ import { auth } from "@/utils/firebase";
 import { useMutation } from "@tanstack/react-query";
 import { signInWithEmailAndPassword } from "firebase/auth";
 
-interface User {
+export interface UserData {
     email: string,
     password: string
 }
-
 interface Result {
     onSuccess: () => void,
     onError: (error: Error) => void
@@ -14,7 +13,7 @@ interface Result {
 
 export function useSignInEmailPasswordMutation({onSuccess, onError}: Result) {
     return useMutation({
-        mutationFn: ({ email, password }: User) => {
+        mutationFn: ({ email, password }: UserData) => {
           return signInWithEmailAndPassword(auth, email, password);
         },
         onSuccess,

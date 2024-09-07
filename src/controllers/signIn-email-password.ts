@@ -13,7 +13,6 @@ export function useSignInEmailPasswordController() {
           },
           onError: (error) => {
             if (error instanceof FirebaseError) {
-              console.log(error.code);
               switch (error.code) {
                 case "auth/invalid-email":
                   toast({

@@ -15,13 +15,13 @@ const User = z.object({
   password: z.string().min(6),
 });
 
-const useLogic = () => {
+function useLogic() {
   const { signInWithEmailPassword } = useSignInEmailPasswordController();
 
   return {
     signInWithEmailPassword,
   };
-};
+}
 
 export function LoginPage() {
   const { signInWithEmailPassword } = useLogic();

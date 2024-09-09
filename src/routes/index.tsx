@@ -1,7 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import barberShop from "@/assets/barberShop.jpg";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { useSignInEmailPasswordController } from "@/controllers/signIn-email-password";
 import { z } from "@/utils/pt-br-zod";
@@ -27,15 +26,23 @@ function useLogic() {
   const loginGoogle = () => signInGoogle();
   const loginApple = () => signInApple();
 
+  const initialValues = {
+    email: "",
+    password: "",
+    rememberMe: false,
+  };
+
   return {
     signInWithEmailPassword,
     loginGoogle,
     loginApple,
+    initialValues,
   };
 }
 
 export function LoginPage() {
-  const { signInWithEmailPassword, loginGoogle, loginApple } = useLogic();
+  const { signInWithEmailPassword, loginGoogle, loginApple, initialValues } =
+    useLogic();
 
   return (
     <div className="flex items-center justify-center w-full h-[100vh]">
@@ -44,7 +51,7 @@ export function LoginPage() {
         alt="Barbearia"
         className="static w-full h-[100vh]"
       />
-      <div className="flex items-center justify-center absolute sm:top-16">
+      <div className="flex items-center justify-center absolute sm:top-16 select-none">
         <div className="flex flex-col justify-center border rounded w-full min-w-96 max-w-md p-8 space-y-6 bg-white">
           <div className="flex items-start justify-center space-x-2">
             <LogInIcon className="w-8 h-8 text-blue-600" />
@@ -57,7 +64,7 @@ export function LoginPage() {
           </h2>
           <Formik
             validationSchema={toFormikValidationSchema(User)}
-            initialValues={{ email: "", password: "" }}
+            initialValues={initialValues}
             onSubmit={signInWithEmailPassword}
           >
             {({ isValid }) => (
@@ -86,7 +93,7 @@ export function LoginPage() {
                     htmlFor="password"
                     className="block text-sm font-medium text-gray-700"
                   >
-                    Password
+                    Senha
                   </Label>
                   <Field
                     name="password"
@@ -102,16 +109,22 @@ export function LoginPage() {
                 </div>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center">
-                    <Checkbox id="remember" />
+                    <Field
+                      name="rememberMe"
+                      id="rememberMe"
+                      type="checkbox"
+                      className="w-5 h-5"
+                      checked={initialValues.rememberMe}
+                    />
                     <Label
-                      htmlFor="remember"
+                      htmlFor="rememberMe"
                       className="ml-2 text-sm text-gray-600"
                     >
-                      Remember me?
+                      Lembrar de mim
                     </Label>
                   </div>
                   <a href="#" className="text-sm text-blue-600">
-                    Forgot Password
+                    Esqueci a senha
                   </a>
                 </div>
                 <Button

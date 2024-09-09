@@ -1,10 +1,10 @@
 import { auth } from "@/utils/firebase";
 import { useMutation } from "@tanstack/react-query";
-import { signInWithEmailAndPassword } from "firebase/auth";
-
+import { browserLocalPersistence, setPersistence, signInWithEmailAndPassword } from "firebase/auth";
 export interface UserData {
     email: string,
-    password: string
+    password: string,
+    rememberMe: boolean
 }
 interface Result {
     onSuccess: () => void,
@@ -13,10 +13,13 @@ interface Result {
 
 export function useSignInEmailPasswordMutation({onSuccess, onError}: Result) {
     return useMutation({
-        mutationFn: ({ email, password }: UserData) => {
+        mutationFn: ({ email, password, rememberMe }: UserData) => {
+            if(rememberMe){
+                console.log("Marcado") }
+                // setPersistence(auth, browserLocalPersistence)}
           return signInWithEmailAndPassword(auth, email, password);
         },
         onSuccess,
-        onError
+        onError,
     })
 }

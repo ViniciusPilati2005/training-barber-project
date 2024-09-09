@@ -21,19 +21,21 @@ const User = z.object({
 });
 
 function useLogic() {
-  const { signInWithEmailPassword, signInGoogle } =
+  const { signInWithEmailPassword, signInGoogle, signInApple } =
     useSignInEmailPasswordController();
 
   const loginGoogle = () => signInGoogle();
+  const loginApple = () => signInApple();
 
   return {
     signInWithEmailPassword,
     loginGoogle,
+    loginApple,
   };
 }
 
 export function LoginPage() {
-  const { signInWithEmailPassword, loginGoogle } = useLogic();
+  const { signInWithEmailPassword, loginGoogle, loginApple } = useLogic();
 
   return (
     <div className="flex items-center justify-center w-full h-[100vh]">
@@ -129,7 +131,7 @@ export function LoginPage() {
             <Button variant="ghost" className="p-2" onClick={loginGoogle}>
               <ChromeIcon className="w-6 h-6" />
             </Button>
-            <Button variant="ghost" className="p-2">
+            <Button variant="ghost" className="p-2" onClick={loginApple}>
               <AppleIcon className="w-6 h-6" />
             </Button>
           </div>

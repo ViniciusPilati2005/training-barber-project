@@ -17,6 +17,7 @@ export const Route = createFileRoute("/")({
 const User = z.object({
   email: z.string().email(),
   password: z.string().min(8),
+  rememberMe: z.boolean().optional(),
 });
 
 function useLogic() {
@@ -114,7 +115,6 @@ export function LoginPage() {
                       id="rememberMe"
                       type="checkbox"
                       className="w-5 h-5"
-                      checked={initialValues.rememberMe}
                     />
                     <Label
                       htmlFor="rememberMe"

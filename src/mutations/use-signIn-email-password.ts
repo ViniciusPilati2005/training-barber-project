@@ -24,11 +24,6 @@ export function useSignInEmailPasswordMutation({onSuccess, onError}: Result) {
                       });
                       return signInWithEmailAndPassword(auth, email, password);
                     } else {
-                toast({
-                    variant: "destructive",
-                    title: "Erro!",
-                    description: "Falha ao lembrar senha",
-                  });
                   return signInWithEmailAndPassword(auth, email, password);
             }
         },

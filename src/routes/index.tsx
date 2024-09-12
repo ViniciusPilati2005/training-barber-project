@@ -46,14 +46,14 @@ export function LoginPage() {
     useLogic();
 
   return (
-    <div className="flex items-center justify-center w-full h-[100vh]">
+    <div className="flex items-center justify-center w-full">
       <img
         src={barberShop}
         alt="Barbearia"
         className="static w-full h-[100vh]"
       />
-      <div className="flex items-center justify-center absolute sm:top-16 select-none">
-        <div className="flex flex-col justify-center border rounded w-full min-w-96 max-w-md p-8 space-y-6 bg-white">
+      <div className="flex items-center justify-center absolute max-h-72 select-none">
+        <div className="flex flex-col justify-center border rounded-lg w-full min-w-96 max-w-md p-3 bg-white">
           <div className="flex items-start justify-center space-x-2">
             <LogInIcon className="w-8 h-8 text-blue-600" />
             <h1 className="text-2xl font-bold text-gray-900">

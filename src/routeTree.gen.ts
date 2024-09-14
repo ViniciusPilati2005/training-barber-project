@@ -11,10 +11,16 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as SendEmailResetImport } from './routes/send-email-reset'
 import { Route as DashboardImport } from './routes/dashboard'
 import { Route as IndexImport } from './routes/index'
 
 // Create/Update Routes
+
+const SendEmailResetRoute = SendEmailResetImport.update({
+  path: '/send-email-reset',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const DashboardRoute = DashboardImport.update({
   path: '/dashboard',
@@ -44,12 +50,23 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardImport
       parentRoute: typeof rootRoute
     }
+    '/send-email-reset': {
+      id: '/send-email-reset'
+      path: '/send-email-reset'
+      fullPath: '/send-email-reset'
+      preLoaderRoute: typeof SendEmailResetImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
 // Create and export the route tree
 
-export const routeTree = rootRoute.addChildren({ IndexRoute, DashboardRoute })
+export const routeTree = rootRoute.addChildren({
+  IndexRoute,
+  DashboardRoute,
+  SendEmailResetRoute,
+})
 
 /* prettier-ignore-end */
 
@@ -60,7 +77,8 @@ export const routeTree = rootRoute.addChildren({ IndexRoute, DashboardRoute })
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/dashboard"
+        "/dashboard",
+        "/send-email-reset"
       ]
     },
     "/": {
@@ -68,6 +86,9 @@ export const routeTree = rootRoute.addChildren({ IndexRoute, DashboardRoute })
     },
     "/dashboard": {
       "filePath": "dashboard.tsx"
+    },
+    "/send-email-reset": {
+      "filePath": "send-email-reset.tsx"
     }
   }
 }

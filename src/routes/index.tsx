@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import barberShop from "@/assets/barberShop.jpg";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -53,7 +53,7 @@ export function LoginPage() {
         className="static w-full h-[100vh]"
       />
       <div className="flex items-center justify-center absolute max-h-72 select-none">
-        <div className="flex flex-col justify-center border rounded-lg w-full min-w-96 max-w-md p-3 bg-white">
+        <div className="flex flex-col justify-center border rounded-lg w-full min-w-96 max-w-md p-6 bg-white">
           <div className="flex items-start justify-center space-x-2">
             <LogInIcon className="w-8 h-8 text-blue-600" />
             <h1 className="text-2xl font-bold text-gray-900">
@@ -123,9 +123,12 @@ export function LoginPage() {
                       Lembrar de mim
                     </Label>
                   </div>
-                  <a href="#" className="text-sm text-blue-600">
+                  <Link
+                    to="/send-email-reset"
+                    className="text-sm text-blue-600"
+                  >
                     Esqueci a senha
-                  </a>
+                  </Link>
                 </div>
                 <Button
                   type="submit"
@@ -137,7 +140,7 @@ export function LoginPage() {
               </Form>
             )}
           </Formik>
-          <div className="text-center text-gray-600">
+          <div className="text-center text-gray-600 mt-2">
             Fazer login com outras contas?
           </div>
           <div className="flex justify-center space-x-4">

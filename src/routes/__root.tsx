@@ -7,6 +7,7 @@ import {
   ROUTE_LOGIN_REGEX,
   ROUTE_MAIN,
   ROUTE_MAIN_REGEX,
+  ROUTE_RESET_PASSWORD_REGEX,
 } from "@/constants/routes";
 
 export const Route = createRootRoute({
@@ -29,6 +30,10 @@ export const Route = createRootRoute({
     }
 
     if (!isLogged) return;
+
+    if (isLogged && ROUTE_RESET_PASSWORD_REGEX.test(route)) {
+      throw redirect({ to: ROUTE_LOGIN });
+    }
 
     if (ROUTE_LOGIN_REGEX.test(route) && isLogged) {
       throw redirect({ to: ROUTE_MAIN });

@@ -16,10 +16,10 @@ export function ButtonSubmit({
   className,
   type,
 }: ButtonProps) {
-  const { isSubmitting } = useFormikContext();
+  const { isSubmitting, isValid } = useFormikContext();
 
   return (
-    <Button className={className} type={type}>
+    <Button className={className} type={type} disabled={!isValid}>
       {isSubmitting ? iconLoading : icon}
       {textButton}
     </Button>

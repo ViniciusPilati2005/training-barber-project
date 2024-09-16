@@ -13,6 +13,7 @@
 import { Route as rootRoute } from './routes/__root'
 import { Route as SendEmailResetImport } from './routes/send-email-reset'
 import { Route as DashboardImport } from './routes/dashboard'
+import { Route as CreateAccountImport } from './routes/create-account'
 import { Route as IndexImport } from './routes/index'
 
 // Create/Update Routes
@@ -24,6 +25,11 @@ const SendEmailResetRoute = SendEmailResetImport.update({
 
 const DashboardRoute = DashboardImport.update({
   path: '/dashboard',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const CreateAccountRoute = CreateAccountImport.update({
+  path: '/create-account',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -41,6 +47,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/create-account': {
+      id: '/create-account'
+      path: '/create-account'
+      fullPath: '/create-account'
+      preLoaderRoute: typeof CreateAccountImport
       parentRoute: typeof rootRoute
     }
     '/dashboard': {
@@ -64,6 +77,7 @@ declare module '@tanstack/react-router' {
 
 export const routeTree = rootRoute.addChildren({
   IndexRoute,
+  CreateAccountRoute,
   DashboardRoute,
   SendEmailResetRoute,
 })
@@ -77,12 +91,16 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "__root.tsx",
       "children": [
         "/",
+        "/create-account",
         "/dashboard",
         "/send-email-reset"
       ]
     },
     "/": {
       "filePath": "index.tsx"
+    },
+    "/create-account": {
+      "filePath": "create-account.tsx"
     },
     "/dashboard": {
       "filePath": "dashboard.tsx"

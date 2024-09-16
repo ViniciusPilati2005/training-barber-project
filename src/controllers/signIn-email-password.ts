@@ -4,6 +4,7 @@ import { useSignInEmailPasswordMutation } from "@/mutations/use-signIn-email-pas
 import { useSignInGoogleMutation } from "@/mutations/use-signIn-google";
 import { useNavigate } from "@tanstack/react-router";
 import { FirebaseError } from "firebase/app";
+import { useSendEmailResetPasswordMutation } from "@/mutations/send-email-reset-password";
 
 export function useSignInEmailPasswordController() {
     const navigate = useNavigate({ from: "/" });
@@ -209,6 +210,26 @@ export function useSignInEmailPasswordController() {
       },
     });
 
+    const { mutate: resetPassword } = useSendEmailResetPasswordMutation({
+          onSuccess: () => {
+              toast({
+                  variant: "default",
+                  title: "Sucesso",
+                  description: "Email enviado com sucesso!",
+                });
+                navigate({to: '/'})
+          },
+          onError: () => {
+              toast({
+                  variant: "destructive",
+                  title: "Erro",
+                  description: "Erro ao enviar email de redefinição!",
+                });
+          }
+    });
 
-    return {signInWithEmailPassword, signInGoogle, signInApple};
-}
+
+      return {signInWithEmailPassword, signInGoogle, signInApple, resetPassword};
+  }
+
+

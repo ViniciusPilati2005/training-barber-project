@@ -9,6 +9,7 @@ import { AppleIcon, ChromeIcon, LogInIcon } from "lucide-react";
 import { toFormikValidationSchema } from "zod-formik-adapter";
 import { ErrorMessage } from "@/components/ui/error-message";
 import { Field } from "@/components/ui/field";
+import { ButtonSubmit } from "@/components/custom/button-submit";
 
 export const Route = createFileRoute("/")({
   component: LoginPage,
@@ -68,77 +69,70 @@ export function LoginPage() {
             initialValues={initialValues}
             onSubmit={signInWithEmailPassword}
           >
-            {({ isValid }) => (
-              <Form className="space-y-4">
-                <div>
-                  <Label
-                    htmlFor="email"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    Email
-                  </Label>
-                  <Field
-                    name="email"
-                    id="email"
-                    type="email"
-                    placeholder="user@email.com"
-                    className="w-full mt-1"
-                  />
-                  <p className="flex">
-                    &nbsp;
-                    <ErrorMessage name="email" />
-                  </p>
-                </div>
-                <div>
-                  <Label
-                    htmlFor="password"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    Senha
-                  </Label>
-                  <Field
-                    name="password"
-                    id="password"
-                    type="password"
-                    placeholder="******"
-                    className="w-full mt-1"
-                  />
-                  <p className="flex">
-                    &nbsp;
-                    <ErrorMessage name="password" />
-                  </p>
-                </div>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center">
-                    <Field
-                      name="rememberMe"
-                      id="rememberMe"
-                      type="checkbox"
-                      className="w-5 h-5"
-                    />
-                    <Label
-                      htmlFor="rememberMe"
-                      className="ml-2 text-sm text-gray-600"
-                    >
-                      Lembrar de mim
-                    </Label>
-                  </div>
-                  <Link
-                    to="/send-email-reset"
-                    className="text-sm text-blue-600"
-                  >
-                    Esqueci a senha
-                  </Link>
-                </div>
-                <Button
-                  type="submit"
-                  className="w-full bg-blue-600 text-white"
-                  disabled={!isValid}
+            <Form className="space-y-4">
+              <div>
+                <Label
+                  htmlFor="email"
+                  className="block text-sm font-medium text-gray-700"
                 >
-                  Continuar
-                </Button>
-              </Form>
-            )}
+                  Email
+                </Label>
+                <Field
+                  name="email"
+                  id="email"
+                  type="email"
+                  placeholder="user@email.com"
+                  className="w-full mt-1"
+                />
+                <p className="flex">
+                  &nbsp;
+                  <ErrorMessage name="email" />
+                </p>
+              </div>
+              <div>
+                <Label
+                  htmlFor="password"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Senha
+                </Label>
+                <Field
+                  name="password"
+                  id="password"
+                  type="password"
+                  placeholder="******"
+                  className="w-full mt-1"
+                />
+                <p className="flex">
+                  &nbsp;
+                  <ErrorMessage name="password" />
+                </p>
+              </div>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center">
+                  <Field
+                    name="rememberMe"
+                    id="rememberMe"
+                    type="checkbox"
+                    className="w-5 h-5"
+                  />
+                  <Label
+                    htmlFor="rememberMe"
+                    className="ml-2 text-sm text-gray-600"
+                  >
+                    Lembrar de mim
+                  </Label>
+                </div>
+                <Link to="/send-email-reset" className="text-sm text-blue-600">
+                  Esqueci a senha
+                </Link>
+              </div>
+              <ButtonSubmit
+                textButton="Continuar"
+                type="submit"
+                className="w-full bg-blue-600 text-white"
+              />
+            </Form>
           </Formik>
           <div className="text-center text-gray-600 mt-2">
             Fazer login com outras contas?
@@ -153,9 +147,9 @@ export function LoginPage() {
           </div>
           <div className="text-center text-gray-600 flex gap-1">
             Não possui uma conta?
-            <a href="#" className="text-blue-600">
+            <Link to="/create-account" className="text-blue-600">
               Clique aqui para cadastrar
-            </a>
+            </Link>
           </div>
         </div>
       </div>

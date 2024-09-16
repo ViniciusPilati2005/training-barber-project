@@ -6,8 +6,7 @@ interface MutationAction {
     onSuccess: () => void
     onError: () => void
 }
-
-interface CreateAccountActions {
+export interface CreateAccountActions {
     email: string
     password: string
 }

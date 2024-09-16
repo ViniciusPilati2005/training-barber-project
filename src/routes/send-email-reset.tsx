@@ -11,7 +11,7 @@ import { Label } from "@/components/ui/label";
 import { z } from "@/utils/pt-br-zod";
 import { Field, Form, Formik } from "formik";
 import { toFormikValidationSchema } from "zod-formik-adapter";
-import { useSendEmailResetPasswordController } from "@/controllers/send-email-reset-password";
+import { useSignInEmailPasswordController } from "@/controllers/signIn-email-password";
 import { ErrorMessage } from "@/components/ui/error-message";
 import { ButtonSubmit } from "@/components/custom/button-submit";
 import { Loader2, Mail } from "lucide-react";
@@ -25,7 +25,7 @@ const emailSchema = z.object({
 });
 
 function useLogic() {
-  const { resetPassword } = useSendEmailResetPasswordController();
+  const { resetPassword } = useSignInEmailPasswordController();
 
   return {
     resetPassword,

@@ -3,6 +3,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { TanStackRouterDevtools } from "@tanstack/router-devtools";
 import { auth } from "@/utils/firebase";
 import {
+  ROUTE_CREATE_ACCOUNT_REGEX,
   ROUTE_LOGIN,
   ROUTE_LOGIN_REGEX,
   ROUTE_MAIN,
@@ -33,6 +34,10 @@ export const Route = createRootRoute({
 
     if (isLogged && ROUTE_RESET_PASSWORD_REGEX.test(route)) {
       throw redirect({ to: ROUTE_LOGIN });
+    }
+
+    if (isLogged && ROUTE_CREATE_ACCOUNT_REGEX.test(route)) {
+      throw redirect({ to: ROUTE_MAIN });
     }
 
     if (ROUTE_LOGIN_REGEX.test(route) && isLogged) {

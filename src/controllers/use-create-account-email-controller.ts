@@ -1,5 +1,5 @@
 import { useToast } from "@/hooks/use-toast";
-import { useCreateAccountEmailMutation } from "@/mutations/use-create-account";
+import { useCreateAccountEmailMutation } from "@/mutations/use-create-account-mutation";
 import { useNavigate } from "@tanstack/react-router";
 
 export function useCreateAccountEmailController () {

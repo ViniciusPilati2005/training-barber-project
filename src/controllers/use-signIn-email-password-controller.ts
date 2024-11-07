@@ -1,10 +1,10 @@
 import { useToast } from "@/hooks/use-toast";
-import { useSignInAppleMutation } from "@/mutations/use-signIn-apple";
-import { useSignInEmailPasswordMutation } from "@/mutations/use-signIn-email-password";
-import { useSignInGoogleMutation } from "@/mutations/use-signIn-google";
+import { useSignInAppleMutation } from "@/mutations/use-signIn-apple-mutation";
+import { useSignInEmailPasswordMutation } from "@/mutations/use-signIn-email-password-mutation";
+import { useSignInGoogleMutation } from "@/mutations/use-signIn-google-mutation";
 import { useNavigate } from "@tanstack/react-router";
 import { FirebaseError } from "firebase/app";
-import { useSendEmailResetPasswordMutation } from "@/mutations/send-email-reset-password";
+import { useSendEmailResetPasswordMutation } from "@/mutations/use-send-email-reset-password-mutation";
 
 export function useSignInEmailPasswordController() {
     const navigate = useNavigate({ from: "/" });
@@ -24,6 +24,13 @@ export function useSignInEmailPasswordController() {
                     description: "Este email não é valido.",
                   });
                   break;
+                  case "auth/invalid-credential":
+                    toast({
+                      variant: "destructive",
+                      title: "Erro!",
+                      description: "Essa conta não está cadastrada.",
+                    });
+                    break;
                 case "auth/user-disabled":
                   toast({
                     variant: "destructive",

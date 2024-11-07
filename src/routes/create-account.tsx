@@ -37,16 +37,8 @@ const initialValues = {
   confirmPassword: "",
 };
 
-function useLogic() {
-  const { createAccount } = useCreateAccountEmailController();
-
-  return {
-    createAccount,
-  };
-}
-
 export function CreateAccount() {
-  const { createAccount } = useLogic();
+  const { createAccount } = useCreateAccountEmailController();
 
   return (
     <Formik
@@ -109,7 +101,7 @@ export function CreateAccount() {
             </CardContent>
             <CardFooter>
               <ButtonSubmit
-                textButton="Enviar Email"
+                textButton="Criar conta"
                 className="w-full flex gap-2"
                 type="submit"
                 icon={<Mail />}

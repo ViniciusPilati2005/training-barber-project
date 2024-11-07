@@ -24,16 +24,8 @@ const emailSchema = z.object({
   email: z.string().email(),
 });
 
-function useLogic() {
-  const { resetPassword } = useSignInEmailPasswordController();
-
-  return {
-    resetPassword,
-  };
-}
-
 export function SendEmailResetPassword() {
-  const { resetPassword } = useLogic();
+  const { resetPassword } = useSignInEmailPasswordController();
 
   return (
     <Formik

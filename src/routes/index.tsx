@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import barberShop from "@/assets/barberShop.jpg";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { useSignInEmailPasswordController } from "@/controllers/signIn-email-password";
+import { useSignInEmailPasswordController } from "@/controllers/use-signIn-email-password-controller";
 import { Form, Formik } from "formik";
 import { AppleIcon, ChromeIcon, LogInIcon } from "lucide-react";
 import { toFormikValidationSchema } from "zod-formik-adapter";

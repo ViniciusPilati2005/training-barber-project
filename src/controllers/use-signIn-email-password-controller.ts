@@ -24,6 +24,13 @@ export function useSignInEmailPasswordController() {
                     description: "Este email não é valido.",
                   });
                   break;
+                  case "auth/invalid-credential":
+                    toast({
+                      variant: "destructive",
+                      title: "Erro!",
+                      description: "Essa conta não está cadastrada.",
+                    });
+                    break;
                 case "auth/user-disabled":
                   toast({
                     variant: "destructive",

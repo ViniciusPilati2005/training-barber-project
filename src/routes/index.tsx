@@ -3,48 +3,27 @@ import barberShop from "@/assets/barberShop.jpg";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { useSignInEmailPasswordController } from "@/controllers/signIn-email-password";
-import { z } from "@/utils/pt-br-zod";
 import { Form, Formik } from "formik";
 import { AppleIcon, ChromeIcon, LogInIcon } from "lucide-react";
 import { toFormikValidationSchema } from "zod-formik-adapter";
 import { ErrorMessage } from "@/components/ui/error-message";
 import { Field } from "@/components/ui/field";
 import { ButtonSubmit } from "@/components/custom/button-submit";
+import { userLoginSchema } from "@/schemas/login-schema";
 
 export const Route = createFileRoute("/")({
   component: LoginPage,
 });
 
-const User = z.object({
-  email: z.string().email(),
-  password: z.string().min(8),
-  rememberMe: z.boolean().optional(),
-});
-
-function useLogic() {
-  const { signInWithEmailPassword, signInGoogle, signInApple } =
-    useSignInEmailPasswordController();
-
-  const loginGoogle = () => signInGoogle();
-  const loginApple = () => signInApple();
-
-  const initialValues = {
-    email: "",
-    password: "",
-    rememberMe: false,
-  };
-
-  return {
-    signInWithEmailPassword,
-    loginGoogle,
-    loginApple,
-    initialValues,
-  };
-}
+const initialValues = {
+  email: "",
+  password: "",
+  rememberMe: false,
+};
 
 export function LoginPage() {
-  const { signInWithEmailPassword, loginGoogle, loginApple, initialValues } =
-    useLogic();
+  const { signInWithEmailPassword, signInGoogle, signInApple } =
+    useSignInEmailPasswordController();
 
   return (
     <div className="flex items-center justify-center w-full">
@@ -65,7 +44,7 @@ export function LoginPage() {
             Faça seu login.
           </h2>
           <Formik
-            validationSchema={toFormikValidationSchema(User)}
+            validationSchema={toFormikValidationSchema(userLoginSchema)}
             initialValues={initialValues}
             onSubmit={signInWithEmailPassword}
           >
@@ -138,10 +117,18 @@ export function LoginPage() {
             Fazer login com outras contas?
           </div>
           <div className="flex justify-center space-x-4">
-            <Button variant="ghost" className="p-2" onClick={loginGoogle}>
+            <Button
+              variant="ghost"
+              className="p-2"
+              onClick={() => signInGoogle()}
+            >
               <ChromeIcon className="w-6 h-6" />
             </Button>
-            <Button variant="ghost" className="p-2" onClick={loginApple}>
+            <Button
+              variant="ghost"
+              className="p-2"
+              onClick={() => signInApple()}
+            >
               <AppleIcon className="w-6 h-6" />
             </Button>
           </div>

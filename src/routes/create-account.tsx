@@ -14,7 +14,7 @@ import { toFormikValidationSchema } from "zod-formik-adapter";
 import { ErrorMessage } from "@/components/ui/error-message";
 import { ButtonSubmit } from "@/components/custom/button-submit";
 import { Loader2, Mail } from "lucide-react";
-import { useCreateAccountEmailController } from "@/controllers/create-account-email";
+import { useCreateAccountEmailController } from "@/controllers/use-create-account-email-controller";
 
 export const Route = createFileRoute("/create-account")({
   component: CreateAccount,

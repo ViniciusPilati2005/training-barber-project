@@ -1,7 +1,7 @@
 import { createRootRoute, Outlet, redirect } from "@tanstack/react-router";
 import { Toaster } from "@/components/ui/toaster";
 import { TanStackRouterDevtools } from "@tanstack/router-devtools";
-import { auth } from "@/utils/firebase";
+import { auth } from "@/services/firebase";
 import {
   ROUTE_CREATE_ACCOUNT_REGEX,
   ROUTE_LOGIN,

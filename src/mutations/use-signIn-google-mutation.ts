@@ -1,4 +1,4 @@
-import { auth, providerGoogle } from "@/utils/firebase";
+import { auth, providerGoogle } from "@/services/firebase";
 import { useMutation } from "@tanstack/react-query";
 import { signInWithPopup } from "firebase/auth";
 

@@ -1,5 +1,5 @@
 import { toast } from "@/hooks/use-toast";
-import { auth, providerApple } from "@/utils/firebase";
+import { auth, providerApple } from "@/services/firebase";
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { signInWithPopup } from "firebase/auth";

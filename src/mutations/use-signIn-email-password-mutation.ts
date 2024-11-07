@@ -1,5 +1,5 @@
 import { toast } from "@/hooks/use-toast";
-import { auth } from "@/utils/firebase";
+import { auth } from "@/services/firebase";
 import { useMutation } from "@tanstack/react-query";
 import { browserLocalPersistence, setPersistence, signInWithEmailAndPassword } from "firebase/auth";
 export interface UserData {
